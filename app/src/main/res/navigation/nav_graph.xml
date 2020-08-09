@@ -6,5 +6,13 @@
     <fragment
         android:id="@+id/placesFragment"
         android:name="com.example.arguide.fragments.PlacesFragment"
-        android:label="PlacesFragment" />
+        android:label="PlacesFragment" >
+        <action
+            android:id="@+id/action_placesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.arguide.fragments.DetailsFragment"
+        android:label="DetailsFragment" />
 </navigation>

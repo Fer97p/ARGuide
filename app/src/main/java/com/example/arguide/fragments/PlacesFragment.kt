@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,7 +14,10 @@ import com.example.arguide.R
 import com.example.arguide.entities.Place
 import com.example.arguide.main.PlaceAdapter
 
-class PlacesFragment : Fragment() {
+class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
+    override fun onClick(place: Place) {
+        Toast.makeText(activity, "Has hecho click en ${place.name}, enhorabuena!", Toast.LENGTH_LONG).show()
+    }
 
     companion object {
         fun newInstance() = PlacesFragment()
@@ -40,7 +44,7 @@ class PlacesFragment : Fragment() {
         places.add(Place("Antigua", 2000, R.drawable.angustias))
         places.add(Place("Teatro", 230, R.drawable.teatro))
 
-        val adapter = PlaceAdapter(places)
+        val adapter = PlaceAdapter(places, this)
 
         recyclerView.adapter = adapter
     }

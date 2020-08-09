@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.arguide.R
 import com.example.arguide.entities.Place
 
-class PlaceAdapter(var list: ArrayList<Place>):RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
+class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnClickListener):RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
         return ViewHolder(v)
@@ -19,6 +19,10 @@ class PlaceAdapter(var list: ArrayList<Place>):RecyclerView.Adapter<PlaceAdapter
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bindItems(list[position])
+        val place = list[position]
+        holder.itemView.setOnClickListener{
+            onClickListener.onClick(place)
+        }
     }
     override fun getItemCount(): Int {
         return list.size
@@ -36,8 +40,11 @@ class PlaceAdapter(var list: ArrayList<Place>):RecyclerView.Adapter<PlaceAdapter
             Glide.with(itemView.context).load(data.image).into(image)
 
             itemView.setOnClickListener{
-                Toast.makeText(itemView.context, "Has hecho click en ${data.name}", Toast.LENGTH_LONG).show()
+
             }
         }
+    }
+    interface OnClickListener{
+        fun onClick(place: Place)
     }
 }
