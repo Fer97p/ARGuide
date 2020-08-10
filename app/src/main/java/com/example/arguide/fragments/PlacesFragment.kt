@@ -7,20 +7,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.arguide.R
 import com.example.arguide.entities.Place
+import com.example.arguide.interfaces.Communicator
 import com.example.arguide.main.PlaceAdapter
 
 class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
+    lateinit var com : Communicator
     override fun onClick(place: Place) {
         Toast.makeText(activity, "Has hecho click en ${place.name}, enhorabuena!", Toast.LENGTH_LONG).show()
-    }
+        com = activity as Communicator
+        com.passData(place.name)
+        findNavController().navigate(R.id.action_placesFragment_to_detailsFragment)
 
-    companion object {
-        fun newInstance() = PlacesFragment()
     }
 
     private lateinit var viewModel: PlacesViewModel
@@ -48,5 +52,6 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
 
         recyclerView.adapter = adapter
     }
+
 
 }

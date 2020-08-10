@@ -29,6 +29,8 @@ android {
 
 dependencies {
 
+    implementation project("launcher-debug")
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     def nav_version = "2.3.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
