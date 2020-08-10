@@ -1,2 +1,5 @@
-include ':launcher-debug', ':app'
+include ':app'
+include ':unityLibrary'
+project(':unityLibrary').projectDir= new File('C:\\Users\\Fer\\Desktop\\SampleMoviles\\ARGuide\\unityLibrary')
+
 rootProject.name='ARGuide'

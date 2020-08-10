@@ -1,5 +1,6 @@
 package com.example.arguide.fragments
 
+import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.example.arguide.R
 import com.example.arguide.entities.Place
 import com.example.arguide.interfaces.Communicator
 import com.example.arguide.main.PlaceAdapter
+import com.unity3d.player.UnityPlayerActivity
 
 class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
     lateinit var com : Communicator
