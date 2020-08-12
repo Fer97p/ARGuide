@@ -22,23 +22,19 @@ class DetailsFragment : Fragment() {
     private lateinit var textContainer : TextView
     private lateinit var button: Button
     private lateinit var viewModel: DetailsViewModel
-    val args: DetailsFragmentArgs by navArgs()
+    private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.details_fragment, container, false)
-
-        //Toast.makeText(activity, "Parámetro transferido: ${inputText}", Toast.LENGTH_LONG).show()
-
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
-        val reference = args.placeReference
+        reference = args.placeReference
         textContainer = requireView().findViewById(R.id.text_container)
         textContainer.text = reference
         button = requireView().findViewById(R.id.goToCamera)
@@ -48,11 +44,7 @@ class DetailsFragment : Fragment() {
         }
         button = requireView().findViewById(R.id.button_check)
         button.setOnClickListener{
-            Toast.makeText(activity, "Parámetro transferido: ${reference}", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, "Parámetro transferido: $reference", Toast.LENGTH_SHORT).show()
         }
-
-
-
     }
-
 }
