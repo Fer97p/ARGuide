@@ -22,10 +22,11 @@ import com.unity3d.player.UnityPlayerActivity
 class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
     lateinit var com : Communicator
     override fun onClick(place: Place) {
-        Toast.makeText(activity, "Has hecho click en ${place.name}, enhorabuena!", Toast.LENGTH_LONG).show()
-        com = activity as Communicator
-        com.passData(place.name)
-        findNavController().navigate(R.id.action_placesFragment_to_detailsFragment)
+        //Toast.makeText(activity, "Has hecho click en ${place.name}, enhorabuena!", Toast.LENGTH_LONG).show()
+        /*com = activity as Communicator
+        com.passData(place.name)*/
+        val action = PlacesFragmentDirections.actionPlacesFragmentToDetailsFragment(place.name)
+        findNavController().navigate(action)
 
     }
 

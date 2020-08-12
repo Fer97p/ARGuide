@@ -7,11 +7,19 @@
 
     <TextView
         android:id="@+id/text_container"
+        android:text="placeholder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_check"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="100dp"
+        android:text="Ver referencia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/goToCamera"
+        android:layout_marginTop="100dp"
         android:text="Pulsa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
