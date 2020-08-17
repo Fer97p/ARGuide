@@ -13,10 +13,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.arguide.R
 import com.example.arguide.entities.Place
 import com.example.arguide.main.PlaceAdapter
+import com.google.android.gms.maps.model.LatLng
 
 class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
     override fun onClick(place: Place) {
-        val action = PlacesFragmentDirections.actionPlacesFragmentToDetailsFragment(place.name)
+        val action = PlacesFragmentDirections.actionPlacesFragmentToDetailsFragment(place.id, place.location.latitude.toFloat(), place.location.longitude.toFloat())
         findNavController().navigate(action)
     }
 
@@ -37,12 +38,11 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
         val recyclerView: RecyclerView = requireView().findViewById(R.id.recycler)
         recyclerView.layoutManager= LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         val places = ArrayList<Place>()
-        places.add(Place("Antigua", 2000, R.drawable.angustias))
-        places.add(Place("Teatro", 230, R.drawable.teatro))
-        places.add(Place("Antigua", 590, R.drawable.antigua))
+        places.add(Place("Angustias",getString(R.string.antiguaId) ,getString(R.string.antiguaInfo) , R.drawable.angustias, LatLng(41.653490, -4.722820)))
+        places.add(Place("Teatro", getString(R.string.antiguaId) ,getString(R.string.antiguaInfo) , R.drawable.teatro, LatLng(41.653490, -4.722820)))
+        places.add(Place("Antigua", getString(R.string.antiguaId) ,getString(R.string.antiguaInfo) , R.drawable.antigua, LatLng(41.653490, -4.722820)))
 
         val adapter = PlaceAdapter(places, this)
-
         recyclerView.adapter = adapter
     }
 

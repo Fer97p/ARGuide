@@ -10,6 +10,7 @@ android {
         applicationId "com.example.arguide"
         minSdkVersion 19
         targetSdkVersion 29
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -33,6 +34,7 @@ android {
 
 dependencies {
 
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
     def nav_version = "2.3.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -57,7 +59,18 @@ dependencies {
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    //Librería AR unity
     implementation project(":unityLibrary")
-
+    //Slider
+    implementation "com.makeramen:roundedimageview:2.3.0"
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.0.7'
+    //Maps
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.github.jd-alexander:library:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0'
+    //AsyncTask improved
+    implementation 'org.jetbrains.anko:anko-sdk15:0.8.2'
+    //Json parsing
+    implementation 'com.beust:klaxon:0.30'
 
 }

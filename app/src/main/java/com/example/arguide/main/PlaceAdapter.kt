@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.arguide.R
 import com.example.arguide.entities.Place
 
-class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnClickListener):RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
+class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
         return ViewHolder(v)
@@ -36,7 +36,7 @@ class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnCl
             val image: ImageView = itemView.findViewById(R.id.imageView_1)
 
             name.text=data.name
-            distancia.text=data.distancia.toString()
+            //distancia.text=data.description
             Glide.with(itemView.context).load(data.image).into(image)
 
             itemView.setOnClickListener{

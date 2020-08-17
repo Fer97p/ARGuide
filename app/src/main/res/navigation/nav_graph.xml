@@ -15,8 +15,26 @@
         android:id="@+id/detailsFragment"
         android:name="com.example.arguide.fragments.DetailsFragment"
         android:label="DetailsFragment" >
-        <argument
-            android:name="place_reference"
+        <action
+            android:id="@+id/action_detailsFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
+        <argument android:name="place"
             app:argType="string" />
+        <argument android:name="place_lat"
+            app:argType="float" />
+        <argument
+            android:name="place_long"
+            app:argType="float" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="com.example.arguide.fragments.MapsFragment"
+        android:label="MapsFragment" >
+        <argument android:name="place"
+            app:argType="string" />
+        <argument android:name="place_lat"
+            app:argType="float" />
+        <argument android:name="place_long"
+            app:argType="float" />
     </fragment>
 </navigation>

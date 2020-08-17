@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">ARGuide</string>
     <string name="game_view_content_description">Game view</string>
-    <string name="antigua">La iglesia de Santa María de La Antigua se levanta desde al menos el siglo XII en la ciudad de Valladolid. Conserva de fines de esa centuria o principios de la siguiente una esbelta torre románica rematada con una flecha recubierta de teja, que la hace ser el campanario románico más alto de España en la actualidad, y un pórtico en el lado norte también románico. El resto del edificio es gótico y neogótico, pues se levantó en el siglo XIV y, tras posteriores añadidos en diferentes estilos, fue intensamente restaurado y reconstruido en la primera mitad del siglo XX.</string>
-
+    <string name="antiguaId">Iglesia de Santa María la Antigua</string>
+    <string name="antiguaInfo">La iglesia de Santa María de La Antigua se levanta desde al menos el siglo XII en la ciudad de Valladolid. Conserva de fines de esa centuria o principios de la siguiente una esbelta torre románica rematada con una flecha recubierta de teja, que la hace ser el campanario románico más alto de España en la actualidad, y un pórtico en el lado norte también románico. El resto del edificio es gótico y neogótico, pues se levantó en el siglo XIV y, tras posteriores añadidos en diferentes estilos, fue intensamente restaurado y reconstruido en la primera mitad del siglo XX.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="denied_location_permission">Si no activa el servicio de localización, no podrá ver su ubicación actual</string>
+    <string name="activate">Conceder</string>
+    <string name="denied_activation_location">Si no activa la localización, no podrá conocer la ruta a su destino</string>
+    <string name="grant">Conceder</string>
 
 
 </resources>
