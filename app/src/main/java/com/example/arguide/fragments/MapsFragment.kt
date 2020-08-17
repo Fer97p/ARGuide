@@ -3,9 +3,11 @@ package com.example.arguide.fragments
 import android.content.Context
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.graphics.Rect
 import android.location.Location
 import android.location.LocationManager
+import android.os.AsyncTask
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -16,6 +18,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.navigation.fragment.navArgs
+import com.beust.klaxon.*
 import com.example.arguide.R
 import com.example.arguide.entities.Constants
 import com.example.arguide.entities.Constants.Location.DEFAULT_ZOOM
@@ -24,6 +27,7 @@ import com.example.arguide.entities.Constants.Location.INTERVAL
 import com.example.arguide.entities.Constants.Location.LOCATION_PERMISSION_REQUEST
 import com.example.arguide.entities.Constants.Location.REQUEST_LOCATION
 import com.example.arguide.entities.Constants.PERMISSIONS
+import com.example.arguide.entities.GoogleMapDTO
 import com.example.arguide.entities.Place
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -34,7 +38,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import org.jetbrains.anko.async
+import org.jetbrains.anko.uiThread
+import java.net.URL
 
 
 class MapsFragment : Fragment() {
@@ -49,6 +60,7 @@ class MapsFragment : Fragment() {
     private lateinit var locationManager: LocationManager
     private lateinit var origin : Location
     private lateinit var originLatLng : LatLng
+    private lateinit var destination : LatLng
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -61,12 +73,11 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
 
-        val destination = LatLng(args.placeLat.toDouble(), args.placeLong.toDouble())
+        destination = LatLng(args.placeLat.toDouble(), args.placeLong.toDouble())
         //val sydney = LatLng(-34.0, 151.0)
         //mMap.isMyLocationEnabled = true
         mMap.addMarker(MarkerOptions().position(destination).title("Marker in ${args.place}"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(destination))
-
 
     }
 
@@ -151,6 +162,8 @@ class MapsFragment : Fragment() {
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     setupLocationManager()
                     getLastKnownLocation()
+                    val url = getUrl(originLatLng, destination)
+                    GetDirection(url).execute()
 
                 } else {
                     enableGPS()
@@ -208,12 +221,96 @@ class MapsFragment : Fragment() {
         originLatLng = LatLng(origin.latitude, origin.longitude)
         mMap.addMarker(MarkerOptions().position(originLatLng).title("Marker in my location"))
     }
+    private fun getUrl(from : LatLng, to : LatLng) : String{
+        val origin = "origin=" + from.latitude + "," + from.longitude
+        val dest = "destination=" + to.latitude + "," + to.longitude
+        val sensor = "sensor=false"
+        val params = "$origin&$dest&$sensor"
+        return  "https://maps.googleapis.com/maps/api/directions/json?$params"+"&key=AIzaSyD_TuJqNyRz1_U5-0w5CjRysNURRPoXp18"
+
+    }
+    private inner class GetDirection(val url : String) : AsyncTask<Void, Void, List<List<LatLng>>>(){
+        override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
+            Log.d("urlcheck", "url: "+ url)
+            val client = OkHttpClient()
+            val request = Request.Builder().url(url).build()
+            val response = client.newCall(request).execute()
+            val data = response.body!!.string()
+            Log.d("GoogleMap" , " data : $data")
+            val result =  ArrayList<List<LatLng>>()
+            try{
+                val respObj = Gson().fromJson(data, GoogleMapDTO::class.java)
+
+                val path =  ArrayList<LatLng>()
+
+                for (i in 0..(respObj.routes[0].legs[0].steps.size-1)){
+//                    val startLatLng = LatLng(respObj.routes[0].legs[0].steps[i].start_location.lat.toDouble()
+//                            ,respObj.routes[0].legs[0].steps[i].start_location.lng.toDouble())
+//                    path.add(startLatLng)
+//                    val endLatLng = LatLng(respObj.routes[0].legs[0].steps[i].end_location.lat.toDouble()
+//                            ,respObj.routes[0].legs[0].steps[i].end_location.lng.toDouble())
+                    path.addAll(decodePolyline(respObj.routes[0].legs[0].steps[i].polyline.points))
+                }
+                result.add(path)
+            }catch (e:Exception){
+                e.printStackTrace()
+            }
+            return result
+        }
+
+        override fun onPostExecute(result: List<List<LatLng>>) {
+            val lineoption = PolylineOptions()
+            for (i in result.indices){
+                lineoption.addAll(result[i])
+                lineoption.width(10f)
+                lineoption.color(Color.BLUE)
+                lineoption.geodesic(true)
+            }
+            mMap.addPolyline(lineoption)
+        }
+    }
     private fun handleGpsEnabled(success: Boolean) {
         if (!success) {
             showMessage(getString(R.string.denied_activation_location), getString(R.string.grant), ::enableGPS)
         } else {
             setupLocationManager()
         }
+    }
+    private fun decodePolyline(encoded: String): List<LatLng> {
+        val poly = ArrayList<LatLng>()
+        var index = 0
+        val len = encoded.length
+        var lat = 0
+        var lng = 0
+
+        while (index < len) {
+            var b: Int
+            var shift = 0
+            var result = 0
+            do {
+                b = encoded[index++].toInt() - 63
+                result = result or (b and 0x1f shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            val dlat = if (result and 1 != 0) (result shr 1).inv() else result shr 1
+            lat += dlat
+
+            shift = 0
+            result = 0
+            do {
+                b = encoded[index++].toInt() - 63
+                result = result or (b and 0x1f shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            val dlng = if (result and 1 != 0) (result shr 1).inv() else result shr 1
+            lng += dlng
+
+            val p = LatLng(lat.toDouble() / 1E5,
+                lng.toDouble() / 1E5)
+            poly.add(p)
+        }
+
+        return poly
     }
     private fun showMessage(message: String, titleButton: String, function: () -> Unit = {}) {
         Snackbar.make(
