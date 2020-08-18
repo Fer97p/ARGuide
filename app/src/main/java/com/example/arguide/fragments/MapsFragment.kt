@@ -1,6 +1,8 @@
 package com.example.arguide.fragments
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -17,10 +19,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
+import androidx.core.app.ActivityCompat
 import androidx.navigation.fragment.navArgs
-import com.beust.klaxon.*
 import com.example.arguide.R
-import com.example.arguide.entities.Constants
 import com.example.arguide.entities.Constants.Location.DEFAULT_ZOOM
 import com.example.arguide.entities.Constants.Location.FASTEST_INTERVAL
 import com.example.arguide.entities.Constants.Location.INTERVAL
@@ -28,7 +29,7 @@ import com.example.arguide.entities.Constants.Location.LOCATION_PERMISSION_REQUE
 import com.example.arguide.entities.Constants.Location.REQUEST_LOCATION
 import com.example.arguide.entities.Constants.PERMISSIONS
 import com.example.arguide.entities.GoogleMapDTO
-import com.example.arguide.entities.Place
+import com.example.arguide.main.IntermediateActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 
@@ -39,13 +40,13 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_maps.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.jetbrains.anko.async
-import org.jetbrains.anko.uiThread
-import java.net.URL
+
 
 
 class MapsFragment : Fragment() {
@@ -61,6 +62,7 @@ class MapsFragment : Fragment() {
     private lateinit var origin : Location
     private lateinit var originLatLng : LatLng
     private lateinit var destination : LatLng
+    private var distance : Int = -1
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -78,6 +80,7 @@ class MapsFragment : Fragment() {
         //mMap.isMyLocationEnabled = true
         mMap.addMarker(MarkerOptions().position(destination).title("Marker in ${args.place}"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(destination))
+
 
     }
 
@@ -100,6 +103,12 @@ class MapsFragment : Fragment() {
                 LOCATION_PERMISSION_REQUEST
             )
         }
+        val button = requireView().findViewById<FloatingActionButton>(R.id.cameraAction)
+        button.setOnClickListener{
+            val intent = Intent(activity, IntermediateActivity::class.java)
+            startActivity(intent)
+        }
+        cameraAction.visibility = View.GONE
         mapFragment?.getMapAsync(callback)
     }
     private fun enableGPS() {
@@ -133,7 +142,7 @@ class MapsFragment : Fragment() {
             try {
                 it.status.startResolutionForResult(requireActivity(), REQUEST_LOCATION)
             } catch (e: IntentSender.SendIntentException) {
-                Log.d("TripFragment", "Error $e")
+                Log.d("MapFragment", "Error $e")
             }
         }
     }
@@ -142,6 +151,20 @@ class MapsFragment : Fragment() {
 
         if (requestCode == LOCATION_PERMISSION_REQUEST) {
             if (grantResults.first() == PackageManager.PERMISSION_GRANTED) {
+                if (context?.let {
+                        ActivityCompat.checkSelfPermission(
+                            it,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        )
+                    } != PackageManager.PERMISSION_GRANTED && context?.let {
+                        ActivityCompat.checkSelfPermission(
+                            it,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                        )
+                    } != PackageManager.PERMISSION_GRANTED
+                ) {
+                    return
+                }
                 mMap.isMyLocationEnabled = true
                 mMap.uiSettings.isCompassEnabled = false
 
@@ -162,6 +185,27 @@ class MapsFragment : Fragment() {
                 if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     setupLocationManager()
                     getLastKnownLocation()
+                    val cameraUpdate = CameraUpdateFactory
+                        .newLatLngZoom(
+                            LatLng(
+                                origin.latitude,
+                                origin.longitude
+                            ),
+                            DEFAULT_ZOOM
+                        )
+
+                    mMap.animateCamera(cameraUpdate, object: GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            if(distance in 1..9){
+                                cameraAction.visibility = View.VISIBLE
+                            }
+                        }
+                        override fun onCancel() {
+                            if(distance in 1..9){
+                                cameraAction.visibility = View.VISIBLE
+                            }                        }
+                    })
+
                     val url = getUrl(originLatLng, destination)
                     GetDirection(url).execute()
 
@@ -190,43 +234,62 @@ class MapsFragment : Fragment() {
 
         val locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
-                val cameraUpdate = CameraUpdateFactory
-                    .newLatLngZoom(
-                        LatLng(
-                            locationResult.lastLocation.latitude,
-                            locationResult.lastLocation.longitude
-                        ),
-                        DEFAULT_ZOOM
-                    )
-
-                mMap.animateCamera(cameraUpdate, object: GoogleMap.CancelableCallback {
-                    override fun onFinish() {
-                        //startTrip.visibility = View.VISIBLE
-                        //cleanMap.visibility = View.VISIBLE
+                val locationAux = Location("")
+                locationAux.latitude = destination.latitude
+                locationAux.longitude = destination.longitude
+                distance = locationResult.lastLocation.distanceTo(locationAux).toInt()
+                if(distance<10){
+                    cameraAction.visibility = View.VISIBLE
+                }else{
+                    if(cameraAction!=null){
+                        cameraAction.visibility = View.GONE
                     }
-                    override fun onCancel() {
-                        //startTrip.visibility = View.VISIBLE
-                        //cleanMap.visibility = View.VISIBLE
-                    }
-                })
-                locationProviderClient.removeLocationUpdates(this)
+                }
             }
         }
 
         locationProviderClient = FusedLocationProviderClient(requireContext())
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         locationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
     private fun getLastKnownLocation(){
-        origin = locationManager.getLastKnownLocation(locationManager.allProviders[0])
+        if (context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED && context?.let {
+                ActivityCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            } != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        origin = this.locationManager.getLastKnownLocation(locationManager.allProviders[0])!!
         originLatLng = LatLng(origin.latitude, origin.longitude)
-        mMap.addMarker(MarkerOptions().position(originLatLng).title("Marker in my location"))
+        //mMap.addMarker(MarkerOptions().position(originLatLng).title("Marker in my location"))
     }
     private fun getUrl(from : LatLng, to : LatLng) : String{
         val origin = "origin=" + from.latitude + "," + from.longitude
         val dest = "destination=" + to.latitude + "," + to.longitude
         val sensor = "sensor=false"
         val params = "$origin&$dest&$sensor"
-        return  "https://maps.googleapis.com/maps/api/directions/json?$params"+"&key=AIzaSyD_TuJqNyRz1_U5-0w5CjRysNURRPoXp18"
+        return "https://maps.googleapis.com/maps/api/directions/json?$params&key=AIzaSyD_TuJqNyRz1_U5-0w5CjRysNURRPoXp18"
 
     }
     private inner class GetDirection(val url : String) : AsyncTask<Void, Void, List<List<LatLng>>>(){
@@ -243,12 +306,7 @@ class MapsFragment : Fragment() {
 
                 val path =  ArrayList<LatLng>()
 
-                for (i in 0..(respObj.routes[0].legs[0].steps.size-1)){
-//                    val startLatLng = LatLng(respObj.routes[0].legs[0].steps[i].start_location.lat.toDouble()
-//                            ,respObj.routes[0].legs[0].steps[i].start_location.lng.toDouble())
-//                    path.add(startLatLng)
-//                    val endLatLng = LatLng(respObj.routes[0].legs[0].steps[i].end_location.lat.toDouble()
-//                            ,respObj.routes[0].legs[0].steps[i].end_location.lng.toDouble())
+                for (i in 0 until respObj.routes[0].legs[0].steps.size){
                     path.addAll(decodePolyline(respObj.routes[0].legs[0].steps[i].polyline.points))
                 }
                 result.add(path)
