@@ -36,5 +36,8 @@
             app:argType="float" />
         <argument android:name="place_long"
             app:argType="float" />
+        <action
+            android:id="@+id/action_mapsFragment_self"
+            app:destination="@id/mapsFragment" />
     </fragment>
 </navigation>

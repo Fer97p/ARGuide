@@ -35,10 +35,11 @@ class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnCl
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         fun bindItems(data: Place){
             val name: TextView = itemView.findViewById(R.id.title)
-            // distancia: TextView = itemView.findViewById(R.id.distancia)
+            //val distance: TextView = itemView.findViewById(R.id.distance)
             val image: ImageView = itemView.findViewById(R.id.imageView_1)
             name.text=data.name
-            //distancia.text=data.description
+            val distanceText = data.distance.toString()+"m"
+            //distance.text=distanceText
             Glide.with(itemView.context).load(data.image).into(image)
 
         }

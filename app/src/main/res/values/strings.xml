@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AR Guide</string>
     <string name="game_view_content_description">Game view</string>
-    <string name="antiguaId">Iglesia de Santa María la Antigua</string>
+    <string name="antiguaId">Iglesia de Santa María de la Antigua</string>
     <string name="antiguaInfo">La iglesia de Santa María de La Antigua se levanta desde al menos el siglo XII en la ciudad de Valladolid. Conserva de fines de esa centuria o
         principios de la siguiente una esbelta torre románica rematada con una flecha recubierta de teja, que la hace ser el campanario románico más alto de España en la actualidad,
         y un pórtico en el lado norte también románico. El resto del edificio es gótico y neogótico, pues se levantó en el siglo XIV y, tras posteriores añadidos en diferentes estilos,

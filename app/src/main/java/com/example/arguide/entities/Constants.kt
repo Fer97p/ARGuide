@@ -3,6 +3,14 @@ package com.example.arguide.entities
 import android.Manifest
 
 object Constants {
+    sealed class Views {
+        object Home: Views()
+        object Trip: Views()
+        object History: Views()
+        object Points: Views()
+        object Settings: Views()
+        object Instructions: Views()
+    }
 
     object Location {
         const val INTERVAL = 1000L
