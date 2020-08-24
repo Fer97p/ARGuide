@@ -1,6 +1,5 @@
-package com.example.arguide.fragments
+package com.example.arguide.ui.details
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,19 +8,18 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.viewpager2.widget.ViewPager2
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 
 import com.example.arguide.R
-import com.example.arguide.entities.Place
-import com.example.arguide.main.IntermediateActivity
-import com.example.arguide.main.MainActivity
+import com.example.arguide.ui.DetailsFragmentArgs
+import com.example.arguide.ui.DetailsFragmentDirections
+import com.example.arguide.ui.main.MainActivity
 
 class DetailsFragment : Fragment() {
 
-    private var aux = 0
+    private var areImagesAdded = false
     private lateinit var button: Button
     private val args: DetailsFragmentArgs by navArgs()
     private var sliderItems = ArrayList<SlideModel>()
@@ -30,19 +28,23 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if(aux==0){
+        if(!areImagesAdded){
             addContent(args.place)
         }
         return inflater.inflate(R.layout.details_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        aux++
         super.onActivityCreated(savedInstanceState)
         //viewModel = ViewModelProviders.of(this).get(DetailsViewModel::class.java)
         button = requireView().findViewById(R.id.trip)
         button.setOnClickListener{
-            val action = DetailsFragmentDirections.actionDetailsFragmentToMapsFragment(args.place, args.placeLat, args.placeLong)
+            val action =
+                DetailsFragmentDirections.actionDetailsFragmentToMapsFragment(
+                    args.place,
+                    args.placeLat,
+                    args.placeLong
+                )
             findNavController().navigate(action)
         }
         val imageSlider = requireView().findViewById<ImageSlider>(R.id.image_slider)
@@ -83,5 +85,6 @@ class DetailsFragment : Fragment() {
             sliderItems.add(SlideModel(R.drawable.teatro_slider3, "Actual edificio de viviendas levantado en el solar"))
             sliderItems.add(SlideModel(R.drawable.teatro_slider4, "Boceto de la fachada que no llegó a realizarse"))
         }
+        areImagesAdded = true
     }
 }

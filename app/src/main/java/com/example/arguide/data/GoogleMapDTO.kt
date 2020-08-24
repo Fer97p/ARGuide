@@ -1,4 +1,4 @@
-package com.example.arguide.entities
+package com.example.arguide.data
 
 class GoogleMapDTO {
     var routes = ArrayList<Routes>()

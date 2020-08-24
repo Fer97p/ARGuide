@@ -5,7 +5,7 @@
 
     <fragment
         android:id="@+id/placesFragment"
-        android:name="com.example.arguide.fragments.PlacesFragment"
+        android:name="com.example.arguide.ui.places.PlacesFragment"
         android:label="PlacesFragment" >
         <action
             android:id="@+id/action_placesFragment_to_detailsFragment"
@@ -13,7 +13,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.arguide.fragments.DetailsFragment"
+        android:name="com.example.arguide.ui.details.DetailsFragment"
         android:label="DetailsFragment" >
         <action
             android:id="@+id/action_detailsFragment_to_mapsFragment"
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
-        android:name="com.example.arguide.fragments.MapsFragment"
+        android:name="com.example.arguide.ui.map.MapsFragment"
         android:label="MapsFragment" >
         <argument android:name="place"
             app:argType="string" />

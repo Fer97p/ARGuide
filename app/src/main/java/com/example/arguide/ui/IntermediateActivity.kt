@@ -1,4 +1,4 @@
-package com.example.arguide.main
+package com.example.arguide.ui
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

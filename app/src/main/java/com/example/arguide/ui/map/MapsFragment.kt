@@ -1,7 +1,6 @@
-package com.example.arguide.fragments
+package com.example.arguide.ui.map
 
 import android.Manifest
-import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
@@ -15,32 +14,29 @@ import android.os.AsyncTask
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.os.Looper
-import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.arguide.R
-import com.example.arguide.entities.Constants.Location.DEFAULT_ZOOM
-import com.example.arguide.entities.Constants.Location.FASTEST_INTERVAL
-import com.example.arguide.entities.Constants.Location.INTERVAL
-import com.example.arguide.entities.Constants.Location.LOCATION_PERMISSION_REQUEST
-import com.example.arguide.entities.Constants.Location.REQUEST_LOCATION
-import com.example.arguide.entities.Constants.PERMISSIONS
-import com.example.arguide.entities.GoogleMapDTO
-import com.example.arguide.main.IntermediateActivity
+import com.example.arguide.data.Constants.Location.DEFAULT_ZOOM
+import com.example.arguide.data.Constants.Location.FASTEST_INTERVAL
+import com.example.arguide.data.Constants.Location.INTERVAL
+import com.example.arguide.data.Constants.Location.LOCATION_PERMISSION_REQUEST
+import com.example.arguide.data.Constants.Location.REQUEST_LOCATION
+import com.example.arguide.data.Constants.PERMISSIONS
+import com.example.arguide.data.GoogleMapDTO
+import com.example.arguide.ui.DetailsFragmentArgs
+import com.example.arguide.ui.IntermediateActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -114,7 +110,7 @@ class MapsFragment : Fragment() {
                 })
                 .addOnConnectionFailedListener {
                     Log.d(
-                        "TripFragment",
+                        "MapsFragment",
                         "Error ${it.errorMessage}"
                     )//To change body of created functions use File | Settings | File Templates.
                 }
@@ -372,7 +368,6 @@ class MapsFragment : Fragment() {
                 super.onActivityResult(requestCode, resultCode, data)
 
                 if (resultCode == RESULT_OK) {
-                    Log.d("success", "exito")
                     handleGpsEnabled(
                         resultCode == RESULT_OK
                     )
@@ -380,7 +375,6 @@ class MapsFragment : Fragment() {
                     handleGpsEnabled(
                         resultCode == RESULT_OK
                     )
-                    Log.d("success", "no mucho")
                 }
 
 
@@ -400,9 +394,6 @@ class MapsFragment : Fragment() {
                 ::enableGPS
             )
         } else {
-
-
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
             mapLayout.getMapAsync { googleMap ->
                 mMap = googleMap
                 requestPermissions(
@@ -410,8 +401,6 @@ class MapsFragment : Fragment() {
                     LOCATION_PERMISSION_REQUEST
                 )
             }
-
-
             locationManager =
                 requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
             setupLocationManager()

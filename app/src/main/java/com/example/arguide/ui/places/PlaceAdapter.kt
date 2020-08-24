@@ -1,20 +1,16 @@
-package com.example.arguide.main
+package com.example.arguide.ui.places
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.arguide.R
-import com.example.arguide.entities.Place
-import com.makeramen.roundedimageview.RoundedImageView
-import org.jetbrains.anko.image
+import com.example.arguide.ui.entities.Place
 
-class PlaceAdapter(var list: ArrayList<Place>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
+class PlaceAdapter(var list: List<Place>, private val onClickListener: OnClickListener) : RecyclerView.Adapter<PlaceAdapter.ViewHolder>(){
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.content_item, parent, false)
         return ViewHolder(v)

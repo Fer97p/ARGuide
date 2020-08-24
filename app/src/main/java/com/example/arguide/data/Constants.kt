@@ -1,4 +1,4 @@
-package com.example.arguide.entities
+package com.example.arguide.data
 
 import android.Manifest
 

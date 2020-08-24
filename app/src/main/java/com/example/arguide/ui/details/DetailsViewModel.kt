@@ -1,4 +1,4 @@
-package com.example.arguide.fragments
+package com.example.arguide.ui.details
 
 import androidx.lifecycle.ViewModel
 
