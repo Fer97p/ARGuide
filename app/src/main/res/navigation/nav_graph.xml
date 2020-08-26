@@ -6,7 +6,7 @@
     <fragment
         android:id="@+id/placesFragment"
         android:name="com.example.arguide.ui.places.PlacesFragment"
-        android:label="PlacesFragment" >
+        android:label="Valladolid">
         <action
             android:id="@+id/action_placesFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
@@ -25,19 +25,31 @@
         <argument
             android:name="place_long"
             app:argType="float" />
+        <argument
+            android:name="place_name"
+            app:argType="string"
+            android:defaultValue=" " />
+        <argument
+            android:name="place_description"
+            app:argType="string"
+            android:defaultValue=" " />
     </fragment>
     <fragment
         android:id="@+id/mapsFragment"
         android:name="com.example.arguide.ui.map.MapsFragment"
-        android:label="MapsFragment" >
-        <argument android:name="place"
+        android:label=" ">
+        <argument
+            android:name="place"
             app:argType="string" />
-        <argument android:name="place_lat"
+        <argument
+            android:name="place_lat"
             app:argType="float" />
-        <argument android:name="place_long"
+        <argument
+            android:name="place_long"
             app:argType="float" />
-        <action
-            android:id="@+id/action_mapsFragment_self"
-            app:destination="@id/mapsFragment" />
+        <argument
+            android:name="place_name"
+            android:defaultValue=" "
+            app:argType="string" />
     </fragment>
 </navigation>

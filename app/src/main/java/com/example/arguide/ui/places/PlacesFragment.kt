@@ -2,9 +2,7 @@ package com.example.arguide.ui.places
 
 import android.location.Location
 import android.location.LocationManager
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -32,8 +30,8 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
     private lateinit var originLatLng: LatLng
     private var distance: Int = -1
     private lateinit var googleApiClient: GoogleApiClient
-    private lateinit var places : ArrayList<Place>
-    val viewModel : PlaceViewModel by viewModels()
+    private lateinit var places: ArrayList<Place>
+    private val viewModel: PlaceViewModel by viewModels()
 
 
     override fun onClick(place: Place) {
@@ -41,7 +39,9 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
             PlacesFragmentDirections.actionPlacesFragmentToDetailsFragment(
                 place.id,
                 place.location.latitude.toFloat(),
-                place.location.longitude.toFloat()
+                place.location.longitude.toFloat(),
+                place.name,
+                place.description
             )
         findNavController().navigate(action)
     }
@@ -49,18 +49,14 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
-
     ): View? {
-
-
         return inflater.inflate(R.layout.places_fragment, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (activity as MainActivity).supportActionBar?.title = "Lugares"
-        val placesObserver = Observer<List<Place>>{
+        (activity as MainActivity).supportActionBar?.title = "Valladolid"
+        val placesObserver = Observer<List<Place>> {
             val adapter = PlaceAdapter(it, this)
             val recyclerView: RecyclerView = requireView().findViewById(R.id.recycler)
             recyclerView.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
@@ -68,48 +64,6 @@ class PlacesFragment : Fragment(), PlaceAdapter.OnClickListener {
         }
         viewModel.getListLiveData().observe(viewLifecycleOwner, placesObserver)
         viewModel.getListData()
-
-        /*places = ArrayList<Place>()
-        places.add(
-            Place(
-                "Antigua",
-                getString(R.string.antiguaId),
-                getString(R.string.antiguaInfo),
-                R.drawable.antigua_slider2,
-                LatLng(41.653490, -4.722820),
-                0
-            )
-        )
-        places.add(
-            Place(
-                "Angustias",
-                getString(R.string.angustiasId),
-                getString(R.string.angustiasInfo),
-                R.drawable.angustias_slider1,
-                LatLng(41.654110, -4.723860),
-                0
-            )
-        )
-        places.add(
-            Place(
-                "Teatro",
-                getString(R.string.teatroId),
-                getString(R.string.teatroInfo),
-                R.drawable.teatro,
-                LatLng(41.652210, -4.730590),
-                0
-            )
-        )*/
-
-        /*locationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
-
-        for (place in places) {
-            val locationAux = Location("")
-            locationAux.latitude = place.location.latitude
-            locationAux.longitude = place.location.longitude
-            place.distance = origin.distanceTo(locationAux).toInt()
-        }*/
-
     }
 
     private fun showMessage(message: String, titleButton: String, function: () -> Unit = {}) {

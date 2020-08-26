@@ -1,24 +1,6 @@
 <resources>
     <string name="app_name">AR Guide</string>
     <string name="game_view_content_description">Game view</string>
-    <string name="antiguaId">Iglesia de Santa María de la Antigua</string>
-    <string name="antiguaInfo">La iglesia de Santa María de La Antigua se levanta desde al menos el siglo XII en la ciudad de Valladolid. Conserva de fines de esa centuria o
-        principios de la siguiente una esbelta torre románica rematada con una flecha recubierta de teja, que la hace ser el campanario románico más alto de España en la actualidad,
-        y un pórtico en el lado norte también románico. El resto del edificio es gótico y neogótico, pues se levantó en el siglo XIV y, tras posteriores añadidos en diferentes estilos,
-        fue intensamente restaurado y reconstruido en la primera mitad del siglo XX.</string>
-    <string name="angustiasId">Iglesia de Nuestra Señora de las Angustias</string>
-    <string name="angustiasInfo">La Iglesia Penitencial de Nuestra Señora de las Angustias es una iglesia vallisoletana situada en el centro de la ciudad frente al Teatro Calderón
-        y cerca de la Iglesia de Santa María La Antigua. La iglesia es propiedad y sede de la Ilustre Cofradía Penitencial de Nuestra Señora de las Angustias una de las cofradías más
-        antiguas de la Semana Santa de Valladolid. La historia de esta iglesia está ligada a la de su cofradía, fundada con anterioridad a 1536, que se situó inicialmente en la calle
-        Torrecilla, llamada en el siglo XVI calle de las Angustias Viejas, debido a que en los primeros años de aquel siglo era donde estaba situado el primitivo oratorio de esta cofradía.
-        A finales del siglo XVI la cofradía se traslada a la iglesia actual, frente al antiguo Palacio del Almirante, sobre el que se levantó en el siglo XIX el Teatro Calderón.</string>
-    <string name="teatroId">Teatro de la comedia</string>
-    <string name="teatroInfo">El teatro de la Comedia fue un hoy desaparecido teatro español que se levantó originalmente en 1609-1612 en la ciudad de Valladolid (hoy comunidad
-        autónoma de Castilla y León) sobre un anterior patio de comedias. Estaba situado en la plaza de la Comedia o plazuela del Teatro, llamada tiempo después plaza Martí y Monsó.
-        Fue modificado varias veces conservando su disposición primitiva hasta principios del siglo XX, cuando fue remodelado y pasó a llamarse Gran Teatro. Sobrevivió luego como cine
-        oca (a partir de 1987), siendo derribado finalmente en 2003.</string>
-
-
 
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -26,6 +8,7 @@
     <string name="activate">Conceder</string>
     <string name="denied_activation_location">Si no activa la localización, no podrá conocer la ruta a su destino</string>
     <string name="grant">Conceder</string>
+    <string name="navegacion">Navegación</string>
 
 
 </resources>

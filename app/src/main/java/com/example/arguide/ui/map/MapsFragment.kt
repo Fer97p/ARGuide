@@ -30,8 +30,9 @@ import com.example.arguide.data.Constants.Location.LOCATION_PERMISSION_REQUEST
 import com.example.arguide.data.Constants.Location.REQUEST_LOCATION
 import com.example.arguide.data.Constants.PERMISSIONS
 import com.example.arguide.data.GoogleMapDTO
-import com.example.arguide.ui.DetailsFragmentArgs
 import com.example.arguide.ui.IntermediateActivity
+import com.example.arguide.ui.details.DetailsFragmentArgs
+import com.example.arguide.ui.main.MainActivity
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
 
@@ -76,8 +77,7 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        //observe(mainActivityViewModel.gpsEnabled, ::handleGpsEnabled)
+
 
         mapLayout.getMapAsync { googleMap ->
             mMap = googleMap
@@ -87,15 +87,14 @@ class MapsFragment : Fragment() {
             )
         }
         destination = LatLng(args.placeLat.toDouble(), args.placeLong.toDouble())
-        //val sydney = LatLng(-34.0, 151.0)
-        //mMap.isMyLocationEnabled = true
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(destination))
         val button = requireView().findViewById<FloatingActionButton>(R.id.cameraAction)
         button.setOnClickListener {
             val intent = Intent(activity, IntermediateActivity::class.java)
             startActivity(intent)
         }
         cameraAction.visibility = View.GONE
+        (activity as MainActivity).supportActionBar?.title = args.placeName
+
     }
 
     private fun enableGPS() {
@@ -127,7 +126,7 @@ class MapsFragment : Fragment() {
             .addLocationRequest(locationRequest)
             .setAlwaysShow(true)
 
-        val result =
+        @Suppress("DEPRECATION") val result =
             LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build())
         result.setResultCallback {
             try {
