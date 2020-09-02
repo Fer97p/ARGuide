@@ -10,6 +10,8 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.location.Location
 import android.location.LocationManager
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.AsyncTask
 import androidx.fragment.app.Fragment
 
@@ -21,6 +23,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
+import androidx.core.content.getSystemService
 import androidx.navigation.fragment.navArgs
 import com.example.arguide.R
 import com.example.arguide.data.Constants.Location.DEFAULT_ZOOM
@@ -77,15 +80,7 @@ class MapsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
-        mapLayout.getMapAsync { googleMap ->
-            mMap = googleMap
-            requestPermissions(
-                PERMISSIONS.toTypedArray(),
-                LOCATION_PERMISSION_REQUEST
-            )
-        }
+        (activity as MainActivity).supportActionBar?.title = args.placeName
         destination = LatLng(args.placeLat.toDouble(), args.placeLong.toDouble())
         val button = requireView().findViewById<FloatingActionButton>(R.id.cameraAction)
         button.setOnClickListener {
@@ -93,10 +88,18 @@ class MapsFragment : Fragment() {
             startActivity(intent)
         }
         cameraAction.visibility = View.GONE
-        (activity as MainActivity).supportActionBar?.title = args.placeName
-
+        if (!isNetworkAvailable()) {
+            handleNetworkEnabled(false)
+        } else {
+            mapLayout.getMapAsync { googleMap ->
+                mMap = googleMap
+                requestPermissions(
+                    PERMISSIONS.toTypedArray(),
+                    LOCATION_PERMISSION_REQUEST
+                )
+            }
+        }
     }
-
     private fun enableGPS() {
         if (!::googleApiClient.isInitialized) {
             googleApiClient = GoogleApiClient.Builder(requireContext())
@@ -300,9 +303,10 @@ class MapsFragment : Fragment() {
         ) {
             return
         }
-        locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationManager =
+            requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
         origin = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        while (origin == null){
+        while (origin == null) {
             origin = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
 
         }
@@ -310,7 +314,7 @@ class MapsFragment : Fragment() {
             originLatLng = LatLng(origin!!.latitude, origin!!.longitude)
         }
 
-        mMap.addMarker(MarkerOptions().position(destination).title("Marker in ${args.place}"))
+        mMap.addMarker(MarkerOptions().position(destination).title(args.placeName))
 
     }
 
@@ -381,8 +385,23 @@ class MapsFragment : Fragment() {
                 Log.e("MapsFragment", e.toString())
             }
         }
+    }
 
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager: ConnectivityManager =
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null
+    }
 
+    private fun handleNetworkEnabled(success: Boolean) {
+        if (!success) {
+            showMessage(
+                "Si no activa la red, no podrá obtener la ruta a su destino",
+                "",
+                ::enableGPS
+            )
+        }
     }
 
     private fun handleGpsEnabled(success: Boolean) {
@@ -393,47 +412,49 @@ class MapsFragment : Fragment() {
                 ::enableGPS
             )
         } else {
-            mapLayout.getMapAsync { googleMap ->
-                mMap = googleMap
-                requestPermissions(
-                    PERMISSIONS.toTypedArray(),
-                    LOCATION_PERMISSION_REQUEST
-                )
-            }
-            locationManager =
-                requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            setupLocationManager()
-            getLocation()
-
-            if (origin != null) {
-                val cameraUpdate = CameraUpdateFactory
-                    .newLatLngZoom(
-                        LatLng(
-                            origin!!.latitude,
-                            origin!!.longitude
-                        ),
-                        DEFAULT_ZOOM
+            if (!isNetworkAvailable()) {
+                handleNetworkEnabled(false)
+            } else {
+                mapLayout.getMapAsync { googleMap ->
+                    mMap = googleMap
+                    requestPermissions(
+                        PERMISSIONS.toTypedArray(),
+                        LOCATION_PERMISSION_REQUEST
                     )
+                }
+                locationManager =
+                    requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                setupLocationManager()
+                getLocation()
 
-                mMap.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
-                    override fun onFinish() {
-                        //if(distance in 1..9){
-                        cameraAction.visibility = View.VISIBLE
-                        //}
-                    }
+                if (origin != null) {
+                    val cameraUpdate = CameraUpdateFactory
+                        .newLatLngZoom(
+                            LatLng(
+                                origin!!.latitude,
+                                origin!!.longitude
+                            ),
+                            DEFAULT_ZOOM
+                        )
 
-                    override fun onCancel() {
-                        //if(distance in 1..9){
-                        cameraAction.visibility = View.VISIBLE
-                        //}
-                    }
-                })
+                    mMap.animateCamera(cameraUpdate, object : GoogleMap.CancelableCallback {
+                        override fun onFinish() {
+                            //if(distance in 1..9){
+                            cameraAction.visibility = View.VISIBLE
+                            //}
+                        }
 
-                val url = getUrl(originLatLng, destination)
-                GetDirection(url).execute()
+                        override fun onCancel() {
+                            //if(distance in 1..9){
+                            cameraAction.visibility = View.VISIBLE
+                            //}
+                        }
+                    })
+
+                    val url = getUrl(originLatLng, destination)
+                    GetDirection(url).execute()
+                }
             }
-
-
         }
     }
 

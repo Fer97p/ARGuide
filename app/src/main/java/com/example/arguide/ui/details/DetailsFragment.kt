@@ -1,5 +1,7 @@
 package com.example.arguide.ui.details
 
+import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
+import android.os.Build
 import android.os.Bundle
 import android.text.method.ScrollingMovementMethod
 import androidx.fragment.app.Fragment
@@ -7,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.ImageSlider
@@ -53,6 +56,9 @@ class DetailsFragment : Fragment() {
         val textContainer: TextView = requireView().findViewById(R.id.textInfo)
         textContainer.text = args.placeDescription
         textContainer.movementMethod = ScrollingMovementMethod()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            textContainer.justificationMode = JUSTIFICATION_MODE_INTER_WORD
+        }
 
     }
 

@@ -23,7 +23,7 @@
         android:layout_marginBottom="@dimen/huge_margin"
         android:layout_marginEnd="@dimen/huge_margin"
         app:borderWidth="0dp"
-        app:srcCompat="@drawable/camera_icon"
+        app:srcCompat="@drawable/baseline_camera_alt_black_18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:visibility="visible"/>
