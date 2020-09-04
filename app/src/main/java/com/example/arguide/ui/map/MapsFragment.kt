@@ -11,7 +11,6 @@ import android.graphics.Rect
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.AsyncTask
 import androidx.fragment.app.Fragment
 
@@ -23,7 +22,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.core.app.ActivityCompat
-import androidx.core.content.getSystemService
 import androidx.navigation.fragment.navArgs
 import com.example.arguide.R
 import com.example.arguide.data.Constants.Location.DEFAULT_ZOOM
@@ -33,7 +31,7 @@ import com.example.arguide.data.Constants.Location.LOCATION_PERMISSION_REQUEST
 import com.example.arguide.data.Constants.Location.REQUEST_LOCATION
 import com.example.arguide.data.Constants.PERMISSIONS
 import com.example.arguide.data.GoogleMapDTO
-import com.example.arguide.ui.IntermediateActivity
+import com.example.arguide.ui.main.IntermediateActivity
 import com.example.arguide.ui.details.DetailsFragmentArgs
 import com.example.arguide.ui.main.MainActivity
 import com.google.android.gms.common.api.GoogleApiClient

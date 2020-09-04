@@ -36,6 +36,7 @@ class DetailsFragment : Fragment() {
         return inflater.inflate(R.layout.details_fragment, container, false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         button = requireView().findViewById(R.id.trip)
