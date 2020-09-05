@@ -321,7 +321,7 @@ class MapsFragment : Fragment() {
         val dest = "destination=" + to.latitude + "," + to.longitude
         val sensor = "sensor=false"
         val params = "$origin&$dest&$sensor"
-        return "https://maps.googleapis.com/maps/api/directions/json?$params&key=AIzaSyD_TuJqNyRz1_U5-0w5CjRysNURRPoXp18"
+        return "https://maps.googleapis.com/maps/api/directions/json?$params&key="+getString(R.string.google_maps_key)
 
     }
 
