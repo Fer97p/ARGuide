@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QCARConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="qcar_config.xsd">
+  <Tracking>
+    <ImageTarget name="Antigua_closer_daytime" size="50.000000 77.350426" />
+    <ImageTarget name="LopeVega2" size="50.000000 88.533180" />
+    <ImageTarget name="martiMoro2_rightside" size="50.000000 62.757202" />
+    <ImageTarget name="IglesiaAngustiasRL" size="50.000000 80.699364" />
+    <ImageTarget name="IglesiaSantiago" size="50.000000 79.107979" />
+    <ImageTarget name="SanPablo_left_daytime" size="50.000000 69.022316" />
+    <ImageTarget name="MuseoNacionalEscultura" size="50.000000 69.226120" />
+    <ImageTarget name="MercadoVal" size="50.000000 25.862068" />
+    <ImageTarget name="ArchivoMunicipal" size="50.000000 76.013069" />
+    <ImageTarget name="PuertaBibliotecaNacional" size="50.000000 65.291527" />
+    <ImageTarget name="FabricaHarinas" size="50.000000 37.633770" />
+    <ImageTarget name="FuenteDorada12pm" size="50.000000 47.331787" />
+    <ImageTarget name="TeatroCalderon" size="50.000000 39.702332" />
+    <ImageTarget name="conde_cut_daytime" size="10.000000 13.667426" />
+    <ImageTarget name="ayuntamiento_cut_daytime" size="50.000000 43.551403" />
+    <ImageTarget name="fuente_cut_daytime" size="2.000000 1.909980" />
+    <ImageTarget name="fuente_dorada" size="10.000000 9.542566" />
+    <ImageTarget name="comercios_daytime" size="10.000000 7.717758" />
+    <ImageTarget name="marti_daytime_rightside" size="20.000000 22.342178" />
+    <ImageTarget name="pza_marti_leftside" size="20.000000 21.202715" />
+    <ImageTarget name="roxy_daytime" size="10.000000 13.083859" />
+    <ImageTarget name="teatro_lope_daytime" size="10.000000 20.028328" />
+    <ImageTarget name="iglesia_sanlorenzo_cut_daytime" size="50.000000 48.910892" />
+    <ImageTarget name="pzaMayor_daytime" size="50.000000 51.113361" />
+    <ImageTarget name="catedral_daytime" size="50.000000 49.900002" />
+    <ImageTarget name="canovas_cut_daytime" size="10.000000 11.641469" />
+    <ImageTarget name="antigua_mod_jpg" size="50.000000 41.447369" />
+    <ImageTarget name="pzaUni" size="50.000000 29.736212" />
+    <ImageTarget name="Antigua" size="50.000000 41.328602" />
+    <ImageTarget name="angustias_today" size="15.000000 20.000000" />
+    <ImageTarget name="03_Valladolid_Plaza_de_Marti_y_Monso_rotated" size="10.000000 7.790974" />
+    <ImageTarget name="FachadaTesting" size="10.000000 13.333333" />
+    <ImageTarget name="CuadroHabitacionTest" size="1.000000 1.245803" />
+    <ImageTarget name="cervantes_cut" size="50.000000 36.859394" />
+    <ImageTarget name="testbox1" size="0.300000 0.636959" />
+    <ImageTarget name="canovas_cut" size="50.000000 62.770561" />
+    <ImageTarget name="test1" size="50.000000 66.666664" />
+  </Tracking>
+</QCARConfig>

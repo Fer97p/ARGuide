@@ -9,6 +9,7 @@
     <string name="denied_activation_location">Si no activa la localización, no podrá conocer la ruta a su destino</string>
     <string name="grant">Conceder</string>
     <string name="navegacion">Navegación</string>
+    <string name="places_toolbar_title">Valladolid</string>
 
 
 </resources>

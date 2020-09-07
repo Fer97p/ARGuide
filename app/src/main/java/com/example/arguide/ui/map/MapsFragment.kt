@@ -328,12 +328,12 @@ class MapsFragment : Fragment() {
     private inner class GetDirection(val url: String) :
         AsyncTask<Void, Void, List<List<LatLng>>>() {
         override fun doInBackground(vararg params: Void?): List<List<LatLng>> {
-            Log.d("urlcheck", "url: " + url)
+            //Log.d("urlcheck", "url: " + url)
             val client = OkHttpClient()
             val request = Request.Builder().url(url).build()
             val response = client.newCall(request).execute()
             val data = response.body!!.string()
-            Log.d("GoogleMap", " data : $data")
+            //Log.d("GoogleMap", " data : $data")
             val result = ArrayList<List<LatLng>>()
             try {
                 val respObj = Gson().fromJson(data, GoogleMapDTO::class.java)

@@ -29,14 +29,11 @@ class PlaceAdapter(var list: List<Place>, private val onClickListener: OnClickLi
 
 
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){
-        fun bindItems(data: Place){
+        fun bindItems(p: Place){
             val name: TextView = itemView.findViewById(R.id.title)
-            //val distance: TextView = itemView.findViewById(R.id.distance)
             val image: ImageView = itemView.findViewById(R.id.imageView_1)
-            name.text=data.name
-            //val distanceText = data.distance.toString()+"m"
-            //distance.text=distanceText
-            Glide.with(itemView.context).load(data.image).into(image)
+            name.text=p.name
+            Glide.with(itemView.context).load(p.image).into(image)
 
         }
     }
