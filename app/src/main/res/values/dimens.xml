@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="huge_margin">32dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="corner_radius">10dp</dimen>
+    <dimen name="medium_margin">16dp</dimen>
+</resources>

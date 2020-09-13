@@ -1,3 +1,15 @@
 <resources>
-    <string name="app_name">ARGuide</string>
+    <string name="app_name">AR Guide</string>
+    <string name="game_view_content_description">Game view</string>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="denied_location_permission">Si no activa el servicio de localización, no podrá ver su ubicación actual</string>
+    <string name="activate">Conceder</string>
+    <string name="denied_activation_location">Si no activa la localización, no podrá conocer la ruta a su destino</string>
+    <string name="grant">Conceder</string>
+    <string name="navegacion">Navegación</string>
+    <string name="places_toolbar_title">Valladolid</string>
+
+
 </resources>
