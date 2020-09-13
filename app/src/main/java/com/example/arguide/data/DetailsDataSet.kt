@@ -5,8 +5,8 @@ import com.example.arguide.R
 
 
 class DetailsDataSet {
-    private var sliderItems = ArrayList<SlideModel>()
     fun createDataSet(place: String): ArrayList<SlideModel> {
+        val sliderItems = ArrayList<SlideModel>()
         if (place == "Antigua") {
             sliderItems.add(SlideModel(R.drawable.antigua_slider2, "Vista exterior de la iglesia"))
             sliderItems.add(SlideModel(R.drawable.antigua_slider1, "Interior de la iglesia"))

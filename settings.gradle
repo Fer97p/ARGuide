@@ -1,5 +1,5 @@
 include ':app'
 include ':unityLibrary'
-project(':unityLibrary').projectDir= new File('C:\\Users\\Fer\\Desktop\\SampleMoviles\\ARGuide\\unityLibrary')
+project(':unityLibrary').projectDir= new File('..\\ARGuide\\unityLibrary')
 
 rootProject.name='ARGuide'

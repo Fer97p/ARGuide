@@ -71,5 +71,5 @@ dependencies {
     //Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.github.jd-alexander:library:1.1.0'
-    implementation 'com.google.android.material:material:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
 }

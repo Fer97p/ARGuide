@@ -1,5 +1,6 @@
 package com.example.arguide.ui.details
 
+import android.content.Intent
 import android.graphics.text.LineBreaker.JUSTIFICATION_MODE_INTER_WORD
 import android.os.Build
 import android.os.Bundle
@@ -17,16 +18,17 @@ import androidx.navigation.fragment.navArgs
 import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
-
 import com.example.arguide.R
+import com.example.arguide.ui.main.IntermediateActivity
 import com.example.arguide.ui.main.MainActivity
 import com.example.arguide.viewmodel.DetailsViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DetailsFragment : Fragment() {
 
     private val viewModel: DetailsViewModel by viewModels()
-    private var areImagesAdded = false
-    private lateinit var button: Button
+    private lateinit var tripButton: FloatingActionButton
+    private lateinit var cameraButton: FloatingActionButton
     private val args: DetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -39,8 +41,9 @@ class DetailsFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.Q)
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        button = requireView().findViewById(R.id.trip)
-        button.setOnClickListener {
+        tripButton = requireView().findViewById(R.id.trip)
+        cameraButton = requireView().findViewById(R.id.cameraAction)
+        tripButton.setOnClickListener {
             val action =
                 DetailsFragmentDirections.actionDetailsFragmentToMapsFragment(
                     args.place,
@@ -50,6 +53,10 @@ class DetailsFragment : Fragment() {
                 )
             findNavController().navigate(action)
         }
+        cameraButton.setOnClickListener {
+            val intent = Intent(activity, IntermediateActivity::class.java)
+            startActivity(intent)
+        }
         (activity as MainActivity).supportActionBar?.title = args.placeName
         val detailsObserver = Observer<ArrayList<SlideModel>> {
             val imageSlider = requireView().findViewById<ImageSlider>(R.id.image_slider)
@@ -57,10 +64,7 @@ class DetailsFragment : Fragment() {
             imageSlider.stopSliding()
         }
         viewModel.getListLiveData().observe(viewLifecycleOwner, detailsObserver)
-        if(!areImagesAdded){
-            viewModel.getListData(args.place)
-            areImagesAdded = true
-        }
+        viewModel.getListData(args.place)
         val textContainer: TextView = requireView().findViewById(R.id.textInfo)
         textContainer.text = args.placeDescription
         textContainer.movementMethod = ScrollingMovementMethod()

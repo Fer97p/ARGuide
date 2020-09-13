@@ -58,7 +58,6 @@ class MapsFragment : Fragment() {
     private lateinit var googleApiClient: GoogleApiClient
     private lateinit var mMap: GoogleMap
 
-    //private val mainActivityViewModel: MainActivityViewModel by sharedViewModel()
     private lateinit var locationProviderClient: FusedLocationProviderClient
     private lateinit var locationRequest: LocationRequest
     private lateinit var locationManager: LocationManager
